@@ -1,0 +1,8 @@
+# pyinstaller config
+*.spec
+build/
+dist/
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+__pycache__/
