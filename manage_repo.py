@@ -55,7 +55,7 @@ def cloner_ou_mettre_a_jour(apprenants, dossier_cible):
                 except subprocess.CalledProcessError as e:
                     print(f"Erreur lors du clonage pour {apprenant} : {e}")
             else:
-                print(f"Lien GitHub invalide pour {apprenant} : {lien_github}")
+                print(f"\nLien GitHub invalide pour {apprenant} : {lien_github}")
 
 
 # Fonction principale pour gérer les dépôts

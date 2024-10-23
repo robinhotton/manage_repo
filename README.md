@@ -77,3 +77,16 @@ Lors de l'exécution, le script affiche les actions effectuées dans le terminal
    remote: Repository not found.
    fatal: repository 'https://github.com/etudiant3/Python_POO_Project/' not found
    ```
+
+## Création de l'exécutable windows
+
+Pour transformer ton fichier Python `manage_repo.py` en un exécutable avec **PyInstaller**, voici la commande de base que tu peux utiliser :
+
+```bash
+pyinstaller --onefile manage_repo.py
+```
+
+Quelques options courantes :
+
+- `--onefile` : crée un fichier exécutable unique.
+- `--name <nom_du_programme>` : donne un nom spécifique à l'exécutable.
