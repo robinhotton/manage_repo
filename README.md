@@ -1,102 +1,69 @@
 # Gestion Automatisée des Dépôts GitHub pour Apprenants
 
-Ce projet contient un script Python qui gère automatiquement les dépôts GitHub de plusieurs apprenants à partir d'un fichier CSV. Le script permet de cloner les dépôts s'ils n'existent pas et de les mettre à jour via `git pull` s'ils sont déjà clonés. Il permet aussi de commettre et de pousser les changements vers GitHub si un message de commit est fourni. Les dépôts sont clonés dans un dossier spécifique indiqué par l'utilisateur.
+Ce projet contient un script Python unique `manage_repo.py`, combinant à la fois la logique de gestion des dépôts GitHub et une interface utilisateur graphique construite avec Tkinter. Le script permet de cloner les dépôts, de les mettre à jour et de commettre/pousser les changements vers GitHub si un message de commit est fourni.
 
 ## Fonctionnalités
 
-1. **Clonage des dépôts GitHub** : Si un dossier pour un apprenant n'existe pas dans le répertoire cible, le script clone le dépôt GitHub associé.
-2. **Mise à jour des dépôts existants** : Si un dépôt est déjà cloné, le script effectue un `git pull` pour récupérer les dernières modifications.
-3. **Commit et Push des changements** : Si un message de commit est fourni, le script ajoutera, commitera et poussera les modifications locales vers le dépôt distant.
-4. **Vérification des liens GitHub** : Le script vérifie que les URL GitHub des apprenants sont valides avant de tenter de les cloner.
-5. **Options par défaut** : Le clonage et la mise à jour (`git pull`) sont activés par défaut, mais peuvent être désactivés via des arguments de ligne de commande.
+1. **Clonage des dépôts GitHub** : Clonage automatique des dépôts si le dossier de l'apprenant n'existe pas.
+2. **Mise à jour des dépôts existants** : Effectue un `git pull` pour synchroniser les dépôts existants.
+3. **Commit et Push des modifications** : Effectue `git add .`, `git commit` et `git push` avec un message fourni.
+4. **Vérification et correction des URL GitHub** : Valide et ajuste les URL des dépôts avant toute action. Ajoute le `.git` en fin de chaine s'il n'existe pas.
+5. **Interface utilisateur (Tkinter)** : Interface intuitive pour sélectionner un fichier CSV et gérer les actions.
+6. **Exécutable disponible** : Un fichier exécutable Windows `.exe` est déjà exporté et disponible sur le dépôt GitHub.
 
 ## Prérequis
 
-### 1. Git
+### 1. Python et Git
 
-Le script utilise Git pour cloner et mettre à jour les dépôts. Assurez-vous que Git est installé sur votre machine.
-
-- [Installer Git](https://git-scm.com/)
+- Assurez-vous que Python est installé sur votre machine : [Télécharger Python](https://www.python.org/downloads/).
+- Assurez-vous que Git est installé : [Installer Git](https://git-scm.com/).
 
 ### 2. Fichier CSV
 
-Le fichier CSV doit être placé dans le même répertoire que le script ou l'exécutable. Ce fichier contient un tableau des apprenants avec leurs noms et les liens vers leurs dépôts GitHub.
+Le fichier CSV doit contenir les noms des apprenants et les liens vers leurs dépôts GitHub précisément dans cette ordre. Les colonnes sont nommées "Apprenant" et "Lien Github", mais leur nom importe peu. Par contre il faut obligatoirement une ligne d'en-tête, même vide.
 
-Exemple de contenu d'un fichier CSV (`template.csv`):
+Exemple (`template.csv`) :
 
 ```csv
-"Apprenant","LienGithub"
-"Etudiant1","https://github.com/Etudiant1/TP_POO"
-"Etudiant2","https://github.com/Etudiant2/TP_POO"
-"Etudiant3","https://github.com/Etudiant3/TP_POO"
+"Apprenant","Lien Github"
+"Etudiant 1","https://github.com/Etudiant1/Projet1"
+"Etudiant 2","https://github.com/Etudiant2/Projet2.git"
+"Etudiant 3","https://github.com/Etudiant3/Projet3"
 ```
 
 ## Utilisation
 
-1. Placez l'exécutable (`manage_repos.exe`) dans le même répertoire que le fichier CSV.
-2. Ouvrez un terminal ou une invite de commande dans ce répertoire.
-   - Sous Windows, vous pouvez faire un **Shift + Clic droit** dans le répertoire et choisir "Ouvrir une fenêtre PowerShell ici".
-3. Lancez l'exécutable avec la commande suivante, en spécifiant le fichier CSV et le dossier cible :
+### Exécution de l'interface graphique
+
+1. **Depuis l'exécutable** : Vous pouvez télécharger et utiliser l'exécutable Windows disponible dans le dépôt GitHub (`manage_repo.exe`). Placez le fichier CSV à l'emplacement que vous voulez clone les projets.
+2. **Depuis le script Python** : Si vous préférez utiliser Python directement, lancez le script :
 
    ```bash
-   manage_repos.exe template.csv
+   python manage_repo.py
    ```
 
-Le script va :
+### Utilisation de l'interface
 
-- Cloner les dépôts qui n'existent pas dans le dossier cible spécifié.
-- Faire un `git pull` pour mettre à jour les dépôts existants.
+- **Sélectionner un fichier CSV** : Cliquez sur "Parcourir" pour choisir un fichier CSV contenant les données.
+- **Choisir l'action** :
+  - **Clone et Pull** : Clonage et mise à jour des dépôts.
+  - **Commit et Push** : Nécessite un message de commit.
+- **Message de commit** : Entrez un message si l'option "Commit et Push" est sélectionnée.
+- **Exécuter** : Cliquez sur "Exécuter" pour lancer l'opération choisie.
 
-### Arguments supplémentaires
+## Exemple de sortie
 
-Le script accepte les options suivantes pour personnaliser son comportement :
+Lors de l'exécution, les messages suivants peuvent s'afficher :
 
-- **`-c` ou `--clone`** : Désactive le clonage des dépôts. Par défaut, le clonage est activé. Si vous spécifiez cette option, les dépôts ne seront pas clonés, mais seulement mis à jour si déjà présents.
-  
-- **`-p` ou `--pull`** : Désactive l'opération de mise à jour des dépôts (`git pull`). Par défaut, cette option est activée et le script mettra à jour les dépôts clonés.
-  
-- **`-cp` ou `--commit-push`** : Permet d'ajouter un message de commit pour effectuer un `git add .`, `git commit` et `git push` dans les dépôts clonés ou mis à jour. Exemple d'utilisation :
+- **Clonage réussi** : `Clonage du dépôt pour Etudiant1 : https://github.com/Etudiant1/Projet1`
+- **Mise à jour réussie** : `Mise à jour du dépôt pour Etudiant2 (git pull)`
+- **Erreur de lien invalide** : `Lien GitHub invalide pour Etudiant3`
 
-   ```bash
-   manage_repos.exe template.csv -cp "Message de commit"
-   ```
+## Exécutable Windows
 
-### Remarque importante
+Un fichier `.exe` exporté avec **PyInstaller** est déjà disponible sur le dépôt GitHub pour simplifier l'utilisation sur Windows. Cela permet d'exécuter l'application sans nécessiter Python.
 
-Le script effectue des opérations Git (clone et pull) dans le dossier spécifié comme dossier cible. Assurez-vous que vous disposez des permissions nécessaires pour effectuer des opérations Git dans ce dossier.
-
-## Exemple de sortie du script
-
-Lors de l'exécution, le script affiche les actions effectuées dans le terminal, telles que :
-
-- **Clonage d'un dépôt** :
-
-   ```bash
-   Clonage du dépôt pour Etudiant1 : https://github.com/etudiant1/PythonTP
-   ```
-
-- **Mise à jour d'un dépôt existant** :
-
-   ```bash
-   Mise à jour du dépôt pour Etudiant2 (git pull)
-   ```
-
-- **Erreur avec un lien GitHub invalide** :
-
-   ```bash
-   Lien GitHub invalide pour Etudiant3 : https://github.com/etudiant3/Python_POO_Project
-   ```
-
-- **Erreur avec un lien GitHub valide, mais repository inexistant** :
-
-   ```bash
-   remote: Repository not found.
-   fatal: repository 'https://github.com/etudiant3/Python_POO_Project/' not found
-   ```
-
-## Création de l'exécutable Windows
-
-Pour transformer ton fichier Python `manage_repo.py` en un exécutable avec **PyInstaller**, voici la commande de base que tu peux utiliser :
+Pour créer un exécutable vous-même, utilisez la commande :
 
 ```bash
 pyinstaller --onefile manage_repo.py
